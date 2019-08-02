@@ -1,0 +1,322 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class='content'>
+  <h2>２都市間の気候の比較。<br>似た気候の都市を探す。</h2>
+</div>
+<hr/>
+
+<script type='text/javascript'/>
+
+/* create list of cities for selected region */
+function populate(s1, s2){
+  var s1 =  document.getElementById(s1);
+  var s2 =  document.getElementById(s2);
+  s2.innerHTML = '';
+  if (s1.value == 'Japan'){
+    var optionArray = {{data['Cities_Japan']|tojson|safe}}
+    optionArray.unshift('Tokyo'); /* add a default city */
+  }
+  else if (s1.value == 'N America'){
+    var optionArray = {{data['Cities_NAmerica']|tojson|safe}}
+    optionArray.unshift('New York');
+  }
+  else if (s1.value == 'S America'){
+    var optionArray = {{data['Cities_SAmerica']|tojson|safe}}
+    optionArray.unshift('Buenos Aires');
+  }
+  else if (s1.value == 'Europe'){
+  var optionArray = {{data['Cities_Europe']|tojson|safe}}
+  optionArray.unshift('Paris');
+  }
+  else if (s1.value == 'Asia'){
+    var optionArray = {{data['Cities_Asia']|tojson|safe}}
+    optionArray.unshift('Shanghai');
+  }
+  else if (s1.value == 'Oceania'){
+    var optionArray = {{data['Cities_Oceania']|tojson|safe}}
+    optionArray.unshift('Sydney');
+  }
+  else if (s1.value == 'Africa'){
+    var optionArray = {{data['Cities_Africa']|tojson|safe}}
+    optionArray.unshift('Nairobi');
+  }
+  for(var option in optionArray){
+    var newOption = document.createElement('option');
+    newOption.value = optionArray[option];
+    newOption.innerHTML = optionArray[option];
+    s2.options.add(newOption);
+    }
+}
+</script>
+
+<div class='forms'>
+
+<div class='form1'>
+<h2>都市 1</h2>
+  <p>地域:</p>
+  <select id='slct1' name='slct1' onchange='populate("slct1", "slct2")'>
+    <option value=''></option>
+    <option value='Japan'>日本</option>
+    <option value='N America'>北アメリカ</option>
+    <option value='S America'>南アメリカ</option>
+    <option value='Europe'>ヨーロッパ</option>
+    <option value='Africa'>アフリカ</option>
+    <option value='Asia'>アジア</option>
+    <option value='Oceania'>オセアニア</option>
+  </select>
+
+  <p>都市:</p>
+  <select id='slct2' name='slct2'>
+  </select>
+</div>
+
+<div class='form2'>
+  <h2>都市 2</h2>
+  <p>地域:</p>
+  <select id='slct3' name='slct3' onchange='populate("slct3", "slct4")'>
+    <option value=''></option>
+    <option value='Japan'>日本</option>
+    <option value='N America'>北アメリカ</option>
+    <option value='S America'>南アメリカ</option>
+    <option value='Europe'>ヨーロッパ</option>
+    <option value='Africa'>アフリカ</option>
+    <option value='Asia'>アジア</option>
+    <option value='Oceania'>オセアニア</option>
+  </select>
+
+  <p>都市:</p>
+  <select id='slct4' name='slct4'>
+  </select>
+</div>
+
+<div class='form3_4'>
+  <p><strong>グラフタイプ</strong></p>
+
+<div class='form3'>
+    <p>バーグラフ：<br>ハイサーグラフ</p>
+    <label class='switch'>
+      <input type='checkbox' id='checkbox1'>
+      <span class='slider round'></span>
+    </label>
+  </div>
+<div class='form4'>
+    <p>平均：<br>最高最低</p>
+    <label class='switch'>
+      <input type='checkbox' id='checkbox2'>
+      <span class='slider round'></span>
+    </label>
+  </div>
+  </div>
+
+  <div class='form5_6'>
+    <p><strong>降水量ー気温</strong>の<br>類似度への影響</p>
+
+    <div class='form5'>
+        <label class='slider2'>
+        <input type="range" min="0" max="100" value="70" id="slider2" step='10' list="tickmarks">
+        <datalist id="tickmarks">
+          <option value="0" label="0%">
+          <option value="50" label="50%">
+          <option value="100" label="100%">
+        </datalist>
+      </label>
+ </div>
+
+  <div class='form6'>
+    <input type='submit' value='送信' id='button'>
+  </div>
+</div>
+</div>
+
+<hr/>
+
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+<div id='myDiv'></div>
+<br>
+
+<div id='table1' ></div>
+
+<script type=text/javascript>
+
+$(function() {
+  $('#button').on('click', function(e) {
+     e.preventDefault();
+     var data = JSON.stringify({
+          'region1': $('select[name=slct1]').val(),
+          'city1': $('select[name=slct2]').val(),
+          'region2': $('select[name=slct3]').val(),
+          'city2': $('select[name=slct4]').val(),
+          'temp_precip_ratio': $('#slider2').val()});
+     $.ajax({
+        url: '/receive',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        crossDomain: true,
+        data: data,
+        success: function(data_flask){
+          var City1 = data_flask.City1;
+          var Temp1 = data_flask.Temp1;
+          var Temp1_High = data_flask.Temp1_High;
+          var Temp1_Low = data_flask.Temp1_Low;
+          var Precip1 = data_flask.Precip1;
+          console.log(Precip1)
+          var City2 = data_flask.City2;
+          var Temp2 = data_flask.Temp2;
+          var Temp2_High = data_flask.Temp2_High;
+          var Temp2_Low = data_flask.Temp2_Low;
+          var Precip2 = data_flask.Precip2;
+          console.log(Precip2)
+          var SimScore_City1_2 = data_flask.SimScore_City1_2;
+          var Similar_City_List = data_flask.Similar_City_List;
+          var Temp_Precip_Ratio = data_flask.Temp_Precip_Ratio;
+          var KoeppenC1 = data_flask.KoeppenC1;
+          var Country1 = data_flask.Country1;
+
+          if (($('#checkbox1').is(':checked')) == true) //hythergraph
+          {
+            var trace1 = {x: Precip1, y: Temp1, name: City1,
+                          line: {shape: 'spline'}, type: 'scatter'};
+            var trace2 = {x: Precip2, y: Temp2, name: City2,
+                          line: {shape: 'spline'}, type: 'scatter'};
+
+            var trace3 = {x: Precip1, y: Temp1_High, name: City1, type: 'scatter',
+                          line: {shape: 'spline', dash: 'dot', width: 2},
+                          marker: {color: 'rgb(31, 119, 200)'}};
+            var trace4 = {x: Precip2, y: Temp2_High, name: City2, type: 'scatter',
+                          line: {shape: 'spline', dash: 'dot', width: 2},
+                          marker: {color: 'rgb(255, 127, 14)'}};
+            var trace5 = {x: Precip1, y: Temp1_Low, name: City2, type: 'scatter',
+                          line: {shape: 'spline', dash: 'dot', width: 2},
+                          marker: {color: 'rgb(50, 150, 250)'},
+                          showlegend: false};
+            var trace6 = {x: Precip2, y: Temp2_Low, name: City2, type: 'scatter',
+                          line: {shape: 'spline', dash: 'dot', width: 2},
+                          marker: {color: 'rgb(255, 170, 50)'},
+                          showlegend: false};
+            if (($('#checkbox2').is(':checked')) == false) //aveTemp
+            {var data_plot = [trace1, trace2];}
+            else   //high-lowTemp
+            {var data_plot = [trace3, trace4, trace5, trace6];}
+            var layout = {hovermode: false,
+              legend: {'orientation': 'h', 'x': 0.2, 'y': 1.1},
+              xaxis: {title: '降水量 (mm)',
+                      showgrid: false, showline: true, zeroline: false},
+              yaxis: {title: '気温 (c)',
+                      showgrid: false, showline: true, zeroline: false}};
+          }
+          else  // bar-scatter graph
+          {
+          var month = ['1月', '2月', '3月', '4月', '5月', '6月',
+                        '7月', '8月', '9月', '10月', '11月', '12月'];
+          Temp1_ = Temp1.slice(0,12);  // remove 13th data
+          Precip1_ = Precip1.slice(0,12);
+          Temp2_ = Temp2.slice(0,12);
+          Precip2_ = Precip2.slice(0,12);
+          Temp1_High_ = Temp1_High.slice(0,12);
+          Temp2_High_ = Temp2_High.slice(0,12);
+          Temp1_Low_ = Temp1_Low.slice(0,12);
+          Temp2_Low_ = Temp2_Low.slice(0,12);
+
+          var trace1_ = {x: month, y: Temp1_,
+            name: City1, line: {shape: 'spline'}, type: 'scatter', yaxis: 'y2',
+            marker: {color: 'rgb(31, 119, 200)'}};
+          var trace2_ = {x: month, y: Precip1_,
+            name: City1, type: 'bar',
+            marker: {color: 'rgb(110, 180, 245)'},
+            showlegend: false};
+          var trace3_ = {x: month, y: Temp2_,
+            name: City2, line: {shape: 'spline'}, type: 'scatter', yaxis: 'y2',
+            marker: {color: 'rgb(255, 127, 14)'}};
+          var trace4_ = {x: month, y: Precip2_,
+            name: City2, type: 'bar',
+            marker: {color: 'rgb(255, 180, 110)'},
+            showlegend: false};
+
+          var trace5_ = {x: month, y: Temp1_High_,
+            name: City1, type: 'scatter', yaxis: 'y2',
+            line: {shape: 'spline', dash: 'dot', width: 2},
+            marker: {color: 'rgb(31, 119, 200)'}};
+          var trace6_ = {x: month, y: Temp1_Low_,
+            name: City1, type: 'scatter', yaxis: 'y2',
+            line: {shape: 'spline', dash: 'dot', width: 2},
+            marker: {color: 'rgb(31, 119, 200)'},
+            showlegend: false};
+          var trace7_ = {x: month, y: Temp2_High_,
+            name: City2, type: 'scatter', yaxis: 'y2',
+            line: {shape: 'spline', dash: 'dot', width: 2},
+            marker: {color: 'rgb(255, 127, 14)'}};
+          var trace8_ = {x: month, y: Temp2_Low_,
+            name: City2, type: 'scatter', yaxis: 'y2',
+            line: {shape: 'spline', dash: 'dot', width: 2},
+            marker: {color: 'rgb(255, 127, 14)'},
+            showlegend: false};
+
+          if (($('#checkbox2').is(':checked')) == false) //aveTemp
+          {var data_plot = [trace1_, trace2_, trace3_, trace4_];}
+          else //high-lowTemp
+          {var data_plot = [trace2_, trace4_,
+                           trace5_, trace6_, trace7_, trace8_];}
+          var layout = {hovermode: false,
+            legend: {'orientation': 'h', 'x': 0.2, 'y': 1.1},
+            xaxis: {title: '', tickangle:-60,
+                    showgrid: false, showline: true, zeroline: false},
+            yaxis: {title: '降水量 (mm)', side: 'right', range: [0,500],
+                showgrid: false, showline: true, zeroline: false},
+            yaxis2: {title: '気温 (c)', side: 'left', overlaying: 'y',
+                    showgrid: false, showline: true, zeroline: false}
+                          };
+          }
+          Plotly.newPlot('myDiv', data_plot, layout, {responsive: true});
+
+          var Region_list = ['All', 'Japan', 'North America', 'Europe',
+                          'Asia', 'South America', 'Oceania', 'Africa']
+          var Region_list_jpn = ['全ての地域', '日本', '北アメリカ', 'ヨーロッパ',
+                          'アジア', '南アメリカ', 'オセアニア', 'アフリカ']
+          var Table_Data = '<table border=1 id=table1>';
+          for (var j=0; j<Region_list.length; j++){
+            var SimCity = Similar_City_List[Region_list[j]][0];
+            var SimScore = Similar_City_List[Region_list[j]][1];
+            Table_Data += '<tr>';
+            Table_Data += '<th rowspan=2>'+Region_list_jpn[j]+'</th>';
+            for(var i=0; i<SimCity.length; i++) {
+              Table_Data += '<td id=table_'+Region_list[j]+i+'>'+SimCity[i]+'</td>';}
+            Table_Data += '</tr>';
+            for(var i=0; i<SimCity.length; i++) {
+              Table_Data += '<td>'+SimScore[i].toFixed(2)+'</td>';}
+            Table_Data += '</tr>';
+          }
+          Table_Data += '<caption><strong>'+ City1 + ', ' + Country1
+          +' の気候</strong></br>ケッペン気候分類: '+ KoeppenC1 +'</br>'
+          if (City2 && SimScore_City1_2 !== 'NA'){
+          Table_Data +=
+          '気候類似度 (' + City1 +' と '+ City2 + '): ' + SimScore_City1_2.toFixed(2) + '</br>'
+          }
+          if (City2 && SimScore_City1_2 === 'NA'){
+          Table_Data +=
+          '気候類似度 (' + City1 +' と '+ City2 + '): ' + SimScore_City1_2 + '</br>'
+          }
+          Table_Data += City1 +' に気候が類似した都市のリスト。</br>'
+          +'(気温・降水量の類似度への影響: '+ Temp_Precip_Ratio
+          +':'+ (100-Temp_Precip_Ratio) +')</caption>'
+          Table_Data += '</table>'
+
+          $('#table1').children().remove();
+          $('#table1').append(Table_Data)
+
+          ;},
+        error: function(){ alert('try again');}
+        });
+    });
+  });
+  $(function() {
+    $('#table_All0').on('click', function(e) {
+         e.preventDefault();
+         $('#table1').append(Table_Data)
+    });
+  });
+</script>
+
+{% endblock content %}]

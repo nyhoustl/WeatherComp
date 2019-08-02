@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='description' content='
+    ２都市間の気候の比較。
+    似た気候の都市を探す。
+    気候類似度を計算。
+    気温・降水量を雨温図・ハイサーグラフで表示。
+    ケッペン気候分類の表示。
+    Python, Flask, Pythonanywhereで作成。
+    Compare weather climate of two cities.
+    Find cities with similar weather climate.'/>
+  <meta name="google-site-verification" content="NmCsJWQd0KXsphAGP8GgCUlsep68i1nHP4ibUpFaoLM" />
+  <link rel='stylesheet' type='text/css'
+    href='{{url_for("static", filename="main.css")}}'>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  {% if title %}
+    <title>nyhoustl-{{title}}</title>
+  {% else %}
+    <title>nyhoustl</title>
+  {% endif %}
+</head>
+
+<body class='main'>
+<div id='container'>
+<div id='container-inner' class='pack'>
+<div id='banner'>
+<div id='banner-inner' class='pack'>
+  <h1 id='banner-header'>. ...nyhoustl... .. . .</h1>
+</div>
+</div>
+
+<div id='pagebody'>
+<div id='pagebody-inner' class='pack'>
+<div id='contents'>
+<div id='contents-inner' class='pack'>
+
+<div class='entry'>
+  {% block content %}
+  {% endblock %}
+</div>
+
+</div>
+</div>
+
+<div id='sub'>
+<div id='sub-inner' class='pack'>
+
+<div class='category-categories category'>
+<div class='category-header-profile'>Contents</div>
+<div class='category-content'>
+  <ul class='category-list'>
+  <li class='category-list-item'><a href='/'>気候の比較</a></li>
+  <li class='category-list-item2'><a href='../instruction'>使い方</a></li>
+  <li class='category-list-item'><a href='/index_en'>Compare Climate</a></li>
+  <li class='category-list-item2'><a href='../instruction_en'>Instruction</a></li>
+  <li class='category-list-item'><a href='/'></a></li>
+  <li class='category-list-item'><a href='/'></a></li>
+  <li class='category-list-item2'><a href='../contact.html'>コンタクト</a></li>
+</div>
+
+<div class='category-categories category'>
+<div class='category-header-profile'>This Site</div>
+<div class='category-content'>
+  <p><strong>このサイト</strong>は Python と Flask を backend で作っています。
+    Flask, HTML, CSS, Javascript は初めて使うので拙いところがあると思います。
+  </p>
+  <p><strong>写真</strong>はキューバのクラッシクカー・タクシーの後部座席から撮ったもの。
+  </p>
+</div>
+</div>
+
+<div class='category-categories category'>
+  <div class='category-header-profile'>About Me</div>
+  <div class='category-content'>
+  <p><strong>画像解析</strong> (Matlab) や統計処理 (R) でプログラミングを数年前に始めました。
+  今は Python を使って画像解析や機械学習を中心にやっています。</p>
+  <p><strong>趣味</strong>：旅行、写真、ゴルフ、ランニング、ロードバイク観戦、囲碁、プログラミング</p>
+  </br>
+  <a href="https://twitter.com/nyhoustl?ref_src=twsrc%5Etfw" class="twitter-follow-button"
+  data-lang="en" data-dnt="true" data-show-count="false">Follow @TwitterDev</a>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <a href="https://www.instagram.com/nyhoustl?ref=badge" class="insta_btn2">
+  <span class="insta">
+  <i class="fab fa-instagram"></i>
+  </span>
+  Follow @nyhoustl
+  </a>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id='footer'>
+<div id='footer-inner'>
+  <p><a href='link.html'></a>
+  <a href='privacy.html'></a>
+  <a href='contact.html'></a></p>
+  <address>Copyright(C)  2019  NYHOUSTL all rights reserved. </address>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

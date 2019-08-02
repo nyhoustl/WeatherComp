@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class='content'>
+  <h2>Instruction</h2>
+    <ul>
+      <li>Choose City1.</li>
+      <li>Choose City2 (optional).</li>
+      <li>Choose a graph type. Default is a bar graph and average temperature.</li>
+      <li>Imapct of Temp/Precip to the climate similarity can be changed using the slider.
+        Default value is 70%.</li>
+      <li>Press Submit.</li>
+      <li>When city, graph type etc is changed, press Sumbit again.</li>
+        <ul>
+          <li>Bar graph or hythergarph of City1, City2 will be displayed.</li>
+          <li>Table lists top 5 cities with climate similar to City1 by region.
+            The numbers are climate similarity indices.</li>
+        </ul>
+    </ul>
+  <h2>Data</h2>
+    <ul>
+      <li>Japanese climate data were retrieved from here:
+        <a href='https://weather.time-j.net'>https://weather.time-j.net</a> .</li>
+      <li>climate data of other regions were retrieved from here
+        <a href='https://www.weatherbase.com'>https://www.weatherbase.com</a> .</li>
+      <li>Wether similarity index is calculated as sum of square difference of
+        2 cities temperature/precipitation of each month.</li>
+      <li>Wether similarity index value close to 0 indicates similar climate.
+        The index values vary between 0 and 28.</li>
+      <li>Region All is any region excluding the region of City1.</li>
+      <li>Japan is considered a separate region, not included in Asia.</li>
+      <li>Number of cities with available data: Japan 61, North America 97,
+        South America 11,　Europe 80, Africa 34, Asia 60 ,
+        Oceania 20 with a total of 364 cities.</li>
+    </ul>
+  <h2>Calculation of Climate Similarity Index</h2>
+    <ul>
+      <li>Summer and winter months are weighted higher
+        than other months (by a factor of 1.5 to 3.0).</li>
+      <li>Impact of temperature/precipitation to the climate simiarlity index is 70:30 at default.
+      When either temperature or precipitation data is missing, only avaialbe data are used.</li>
+      <li>Data of southern hemisphere are shifted by 6 months to match summer/winter.</li>
+      <li>This caluclation method is not based on prior publication.</li>
+    </ul>
+</div>
+
+{% endblock content %}]

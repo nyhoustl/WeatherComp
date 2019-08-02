@@ -1,0 +1,407 @@
+html {margin: 0; padding: 0;}
+form, input {margin: 0; padding: 0;}
+a img {border: 0;}
+
+a {color: #3366CC; text-decoration: underline;}
+a: hover {color: #ff9900;}
+
+h1, h2, h3, h4, h5, h6 {font-weight: bold;}
+h1, h2, h3, h4, h5, h6, p, ol, ul, pre, blockquote
+{
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+b {font-size: 15px; color: #666666; text-decoration: none;}
+
+span.new {color: #FF0000}
+
+body
+{
+   width: 100%;
+   margin: 0;
+   padding: 0;
+   font-family: verdana,"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+   font-size: 16px;
+   text-align: center;
+   color: #666;
+   background: #fff ;
+   line-height: 1.5;
+}
+
+/* header */
+header {
+   height: auto;
+   padding: 1%;
+   text-align: center;
+   overflow: visible;
+}
+
+figure {
+  margin: 0;
+}
+img {
+  width: 100%;
+  margin: 0;
+  object-fit: contain;
+}
+
+figcaption {
+  height: 40px;
+  margin-top: -50px;
+  color: #bc9018;
+  font-size: 24px;
+  font-weight: normal;
+  letter-spacing: 4px;
+  font-style: italic;
+  vertical-align: top;
+}
+nav.menu {
+  height: 35px;
+  position: relative;
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 0%;
+  padding: 5px;
+  background-color: #ddd8d8;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+nav li {
+  font-size: 12px;
+  color: #444444;
+  padding: 0px 5px;
+  display: inline-block;
+}
+
+nav ul li a {
+  color: #999999;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+nav ul li a:hover {
+  color: #444444;
+}
+
+nav li#logo a {
+  margin-right:5px;
+  font-size: 14px;
+  color: #666666;
+  display: inline-block;
+}
+
+nav li#logo a:hover {
+  color: #333333;
+}
+
+@media screen and (min-width: 600px) {
+nav li, nav ul li a {
+  font-size: 16px;
+  margin:0 5px;
+}
+nav li#logo a {
+  font-size: 18px;
+  margin-right:10px;
+}
+}
+
+/* page body (below header)*/
+.pagebody2 {
+   position: relative;
+   text-align: center;
+   padding: 10px;
+   margin-right: 1%;
+   margin-left: 1%;
+   clear: left;
+   /* border: 5px solid #CFCECA;*/
+}
+.pagebody2{
+  border: 5px solid #ddd8d8;
+}
+
+.content {
+  text-align: left;
+}
+.content h2 {
+  text-align: center;
+}
+
+.forms {
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+@media screen and (min-width: 600px) {
+  .forms {
+    width: 580px;
+    text-align: center;
+    margin: auto;
+  }
+}
+
+.form1 {  /* Region-City1 */
+  box-sizing: border-box;
+  padding: 10px;
+  float: left;
+  width: 48%;
+  margin: auto;
+}
+.form2 {    /* Region-City2 */
+  box-sizing: border-box;
+  padding: 10px;
+  float: left;
+  width: 49%;
+  margin: auto;
+}
+
+.form3_4 {
+  box-sizing: border-box;
+  padding: 10px;
+  float: left;
+  width: 49%;
+  margin: auto;
+}
+
+.form3 {  /* Graph type hyther */
+  box-sizing: border-box;
+  padding-top: 0px;
+  margin: auto;
+}
+
+.form4 {  /* Graph type hyther */
+  box-sizing: border-box;
+  padding-top: 0px;
+  margin: auto;
+}
+
+.form5_6 {
+  box-sizing: border-box;
+  padding: 10px;
+  float: left;
+  width: 49%;
+  margin: auto;
+}
+
+.form5 {  /* temp_precip_ratio */
+  box-sizing: border-box;
+  padding-top: 0px;
+  width: 60%;
+  margin: auto;
+}
+
+.form6 {   /* Submit button */
+  box-sizing: border-box;
+  margin-top: 40px;
+}
+
+select#slct1, select#slct2, select#slct3, select#slct4,
+forms p {
+  font-size: 16px;
+}
+/* The switch - the box around the slider (graph type)*/
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  display:none;
+}
+
+/* The switch slider (graph type)*/
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2196F3;
+  -webkit-transition: .1s;
+  transition: .1s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 17px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.slider2 {   /* temp_precip_ratio */
+  position: left;
+  display: inline-block;
+  width: 100%;
+  height: 17px;
+}
+#slider2 {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 80%; /* Full-width */
+    height: 5px; /* Specified height */
+    border-radius: 3px;
+    background: #2196F3; /* background */
+    outline: none; /* Remove outline */
+    opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+#button {
+  font-size: 25px;
+  font-weight: bold;
+  height:30px;
+  width:100px;
+}
+
+#myDiv {
+  width: 100%;
+  text-align: center;
+  margin: auto;
+}
+
+@media screen and (min-width: 600px) {
+  #myDiv {
+    width: 500px;
+  }
+}
+
+table#table1 {
+  table-layout:fixed;
+  width:100%;
+  text-align: center;
+  border: 1px solid #ddd8d8;;
+}
+
+td {
+  padding: 5 px;
+  word-wrap: break-word;
+}
+th {
+  padding: 5 px;
+  word-wrap: break-word;
+}
+
+tr:nth-child(even) {
+  background-color: #f0f0ff;
+}
+
+.sub_box {
+  width: 45%;
+  float: left;
+  margin: 0 2%;
+}
+
+.sub_header {
+   position: relative;
+   width: 100%;
+   height: 20px;
+   margin: 10px 3px 5px 3px;
+   padding: 3px 3px;
+   color: #666666;
+   background-color: #ddd8d8; ;
+   font-size: 13px;
+   font-weight: nomal;
+   line-height: 20px;
+   text-transform: uppercase;
+   text-align: center;
+}
+
+.sub_content {
+  text-align: left;
+  padding: 0 4px;
+}
+
+.insta_btn2 {/*ボタンの下地*/
+  color: #FFF;/*文字・アイコン色*/
+  border-radius: 3px;/*角丸に*/
+  position: relative;
+  margin-top: -12px;
+  display: inline-block;
+  height: 22px;/*高さ*/
+  width: 120px;/*幅*/
+  text-align: center;/*中身を中央寄せ*/
+  font-size: 10px;/*文字のサイズ*/
+  font-weight: 500;
+  line-height: 22px;/*高さと合わせる*/
+  vertical-align: middle;/*垂直中央寄せ*/
+  background: -webkit-linear-gradient(135deg, #427eff 0%, #f13f79 70%) no-repeat;
+  background: linear-gradient(135deg, #427eff 0%, #f13f79 70%) no-repeat;/*グラデーション①*/
+  overflow: hidden;/*はみ出た部分を隠す*/
+  text-decoration:none;/*下線は消す*/
+}
+
+.insta_btn2:before {/*グラデーション②*/
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;/*全体を覆う*/
+  height: 100%;/*全体を覆う*/
+  background: -webkit-linear-gradient(15deg, #ffdb2c, rgb(249, 118, 76) 25%, rgba(255, 77, 64, 0) 50%) no-repeat;
+  background: linear-gradient(15deg, #ffdb2c, rgb(249, 118, 76) 25%, rgba(255, 77, 64, 0) 50%) no-repeat;
+}
+
+.insta_btn2 .fa-instagram {/*アイコン*/
+  font-size: 18px;/*アイコンサイズ*/
+  position: relative;
+  top: 2px;/*アイコン位置の微調整*/
+}
+
+.insta_btn2 span {/*テキスト*/
+  display:inline-block;
+  position: relative;
+  transition: .5s
+}
+
+.insta_btn2:hover span {/*ホバーで一周回転*/
+  -webkit-transform: rotateX(360deg);
+  -ms-transform: rotateX(360deg);
+  transform: rotateX(360deg);
+}
+
+footer {
+   width: 100%;
+   height: 80px;
+   clear: left;
+   font-size: 10px;
+   color: #666;
+   text-align: center;
+}

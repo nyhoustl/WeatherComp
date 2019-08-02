@@ -1,0 +1,523 @@
+html {margin: 0; padding: 0;}
+form, input {margin: 0; padding: 0;}
+a img {border: 0;}
+
+a {color: #3366CC; text-decoration: underline;}
+a: hover {color: #ff9900;}
+
+#banner a {color: #FFF; text-decoration: none;}
+#banner a:hover {color: #FFF;}
+
+
+
+h1, h2, h3, h4, h5, h6 {font-weight: bold;}
+h1, h2, h3, h4, h5, h6, p, ol, ul, pre, blockquote
+{
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+b {font-size: 15px; color: #666666; text-decoration: none;}
+
+span.new {color: #FF0000}
+
+body
+{
+   min-width: 800px;
+   margin: 0;
+   padding: 0;
+   font-family: verdana,"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+   font-size: 14px;
+   text-align: center;
+   color: #666;
+   background: #fff ;
+   line-height: 1.5;
+}
+
+#container
+{
+   position: relative;
+   margin: 0 auto;
+   text-align: left;
+   width: 800px;
+}
+
+#container-inner
+{
+   position: static;
+   width: auto;
+   background: #fff ;
+}
+
+/* header */
+#banner
+{
+   position: relative;
+   width: 800px; /* necessary for ie win */
+   height: 350px;
+   background: url(header1.JPG) top left no-repeat;
+}
+
+#banner-inner
+{
+   position: static;
+   width: 800px;
+   height: 350px;
+   /*background: url(blue3.png)  no-repeat;*/
+}
+
+#banner-header
+{
+   margin: 0;
+   color: #bc9018;
+   font-size: 24px;
+   font-weight: normal;
+   letter-spacing: 4px;
+   font-style: italic;
+   position:absolute; left:50px; top:280px;
+   font-family: verdana,"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+}
+
+/* page body (below header)*/
+#pagebody
+{
+   position: relative;
+   width: 100%;
+   text-align: center;
+   /*background: url(blue3.png);*/
+}
+
+#pagebody-inner
+{
+   position: static;
+   width: 800px;
+   padding: 10px 0;
+   margin: 0 auto;
+   text-align: left;
+   border-top: 2px solid #CFCECA;
+}
+
+/* main part */
+#contents
+{
+   display: inline;
+   position: relative;
+   float: left;
+   min-height: 1px;
+}
+/* right column */
+#sub
+{
+   display: inline;
+   position: relative;
+   float: left;
+   min-height: 1px;
+}
+
+@media screen and (min-width: 600px){
+#sub
+{
+   display: inline; /* ie win bugfix */
+   position: relative;
+   float: right;
+   min-height: 1px;
+}
+}
+
+#contents-inner, #sub-inner
+{
+   position: static;
+}
+
+#contents {
+   margin: 0 10px 10px;
+   width: 600px;
+}
+#contents-inner {
+   padding: 10px;
+   margin-top: 10px;
+   border: 1px solid #ccc;
+}
+
+.forms {
+  width: 600px;
+  height: 200px;
+  overflow: hidden;
+  text-align: center;
+}
+.form1 {
+  box-sizing: border-box;
+  padding: 10px;
+  float: left;
+  width: 28%;
+  margin: auto;
+}
+.form2 {
+  box-sizing: border-box;
+  padding: 10px;
+  float: left;
+  width: 35%;
+  margin: auto;
+}
+.form3 {
+  box-sizing: border-box;
+  padding-top: 0px;
+  float: left;
+  width: 25%;
+  margin: auto;
+}
+.form4 {
+  box-sizing: border-box;
+  padding-left: 150px;
+  padding-top: 0px;
+  clear: left;
+  width: 40%;
+}
+
+.form5 {
+  box-sizing: border-box;
+  padding-left: 435px;
+  padding-top: 0px;
+  clear: left;
+  width: 40%;
+}
+
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  display:none;
+}
+
+/* The switch slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2196F3;
+  -webkit-transition: .1s;
+  transition: .1s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 17px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.slider2 {
+  position: left;
+  display: inline-block;
+  width: 100%;
+  height: 17px;
+}
+#slider2 {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 80%; /* Full-width */
+    height: 5px; /* Specified height */
+    border-radius: 3px;
+    background: #2196F3; /* background */
+    outline: none; /* Remove outline */
+    opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+#button {
+  font-size: 18px;
+  height:20px;
+  width:80px;
+}
+
+#table1 {
+  width: 100%;
+  text-align: center;
+  border: 1px solid black;
+}
+
+td {
+  padding: 15 px;
+  width: 90px;
+  word-wrap: break-word;
+}
+th {
+  padding: 15 px;
+  width: 90px;
+  word-wrap: break-word;
+}
+
+tr:nth-child(even) {
+  background-color: #f0f0ff;
+}
+
+#sub {
+   width: 180px;
+}
+#sub-inner {
+  padding: 0 5px;
+}
+
+.archive-header   /* content header */
+{
+   position: relative;
+   width: auto;
+   height: 39px;
+   margin: 0;
+   padding-left: 49px;
+   padding-top: 5px;
+   color: #666;
+   /*background: url(blue3.png)  no-repeat;*/
+   font-size: 15px;
+   font-weight: bold;
+}
+
+.img {
+  float: left; margin: 0 5px 5px 0;
+}
+
+.entry-header  /* just below content */
+{
+   margin-top: 10px;
+   padding: 0 0 0 5px;
+   color: #A9A9A9;
+   font-size: 14px;
+   font-weight: bold;
+}
+
+.entry-content {
+  position: static; clear: both;
+}
+.entry, .entry-more {
+  clear: both;
+}
+.entry-body {
+  width: 100%;
+}
+.entry-body b {
+  color: #666666; text-decoration: none;
+}
+.entry-footer {
+   margin: 5px 10px 0 0;
+   padding: 5px 0;
+   text-align: right;
+   font-size: 10px;
+   border-top: 1px dotted #666;
+   color: #999;
+}
+
+.gotop {
+  text-align: right;  clear: both;
+}
+
+#footer
+{
+   width: 800px; /* necessary for ie win */
+   height: 80px;
+   /*background: url(blue3.png)  no-repeat;*/
+}
+
+#footer-inner
+{
+   font-size: 10px;
+   color: #666;
+   text-align: center;
+}
+
+.footer-navi
+{
+   background: url(blue3.png);
+   font-size: 10px;
+   text-align: center;
+   line-height: 23px;
+   clear: both;
+   color: #999;
+}
+
+.category-header-profile  /* right profile */
+{
+   position: relative;
+   width: 100%;
+   height: 20px;
+   margin: 10px 3px 5px 3px;
+   padding: 3px 3px;
+   color: #fff;
+   background: url(blue3.png) ;
+   font-size: 13px;
+   font-weight: nomal;
+   line-height: 20px;
+   text-transform: uppercase;
+   text-align: center;
+}
+
+.category   /*unused?*/
+{
+   position: relative;
+   overflow: hidden;
+   width: 180px;
+   margin: 0 5px;
+   padding: 0;
+}
+
+.category-content  /*entire right*/
+{
+   position: relative;
+   width: 90%;
+   margin: 5px 0px 10px 5px;
+   padding: 10px;
+   color: #777;
+   font-size: 13px;
+}
+
+.category-list   /*right list*/
+{
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.category-list-item a   /*right list*/
+{
+   width: 160px;
+   height: 25px;
+   background-color: #f5f5f5;
+   text-indent: 10px;
+   text-align: left;
+   display: block;
+   font-size: 14px;
+   line-height: 25px;
+   margin: 4px 0;
+   letter-spacing: 0.1em;
+   border: 1px solid #CCC;
+   text-decoration: none;
+   color: #666;
+}
+
+.category-list-item a:hover
+{
+   background: #7ACEFF;
+   border: 1px solid #CCC;
+   color: #fff;
+}
+
+.category-list-item2 a   /*right list*/
+{
+   width: 160px;
+   height: 25px;
+   background-color: #f5f5f5;
+   text-indent: 15px;
+   text-align: center;
+   display: block;
+   font-size: 12px;
+   line-height: 25px;
+   margin: 4px 0;
+   letter-spacing: 0.1em;
+   border: 1px solid #CCC;
+   text-decoration: none;
+   color: #666;
+}
+
+.category-list-item2 a:hover
+{
+   background: #7ACEFF;
+   border: 1px solid #CCC;
+   color: #fff;
+}
+
+.pack:after
+{
+   content: " ";
+   display: block;
+   visibility: hidden;
+   clear: both;
+}
+
+/*unused?*/
+.red { color: #cc0000; }
+.green { color: #339900; font-weight: bold;}
+
+.insta_btn2{/*ボタンの下地*/
+  color: #FFF;/*文字・アイコン色*/
+  border-radius: 3px;/*角丸に*/
+  position: relative;
+  display: inline-block;
+  height: 22px;/*高さ*/
+  width: 120px;/*幅*/
+  text-align: center;/*中身を中央寄せ*/
+  font-size: 10px;/*文字のサイズ*/
+  font-weight: 500;
+  line-height: 22px;/*高さと合わせる*/
+  vertical-align: middle;/*垂直中央寄せ*/
+  background: -webkit-linear-gradient(135deg, #427eff 0%, #f13f79 70%) no-repeat;
+  background: linear-gradient(135deg, #427eff 0%, #f13f79 70%) no-repeat;/*グラデーション①*/
+  overflow: hidden;/*はみ出た部分を隠す*/
+  text-decoration:none;/*下線は消す*/
+}
+
+.insta_btn2:before{/*グラデーション②*/
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;/*全体を覆う*/
+  height: 100%;/*全体を覆う*/
+  background: -webkit-linear-gradient(15deg, #ffdb2c, rgb(249, 118, 76) 25%, rgba(255, 77, 64, 0) 50%) no-repeat;
+  background: linear-gradient(15deg, #ffdb2c, rgb(249, 118, 76) 25%, rgba(255, 77, 64, 0) 50%) no-repeat;
+}
+
+.insta_btn2 .fa-instagram{/*アイコン*/
+  font-size: 18px;/*アイコンサイズ*/
+  position: relative;
+  top: 2px;/*アイコン位置の微調整*/
+}
+
+.insta_btn2 span {/*テキスト*/
+  display:inline-block;
+  position: relative;
+  transition: .5s
+}
+
+.insta_btn2:hover span{/*ホバーで一周回転*/
+  -webkit-transform: rotateX(360deg);
+  -ms-transform: rotateX(360deg);
+  transform: rotateX(360deg);
+}
