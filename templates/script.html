@@ -1,0 +1,284 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class='content'>
+  <h2>Pythonanywhere, Flaskの使い方</h2>
+  <p class='script'>
+    このサイトはPythonanywhereでPythonとFlaskをバックエンドとしてで作っています。<br>
+    初めて作ったウェッブ・アプリということもあり、
+    特にバックエンドとフロントサイドのデータ送・受信が一番苦労しました。
+    ネットではなかなか思うように情報が集まらなかったので、
+    参考になればと思い、スクリプトの一部（データ送・受信の部分）を載せます。
+  </p>
+  <p class='script'>
+    基本動作は <a href='/'><strong>気候の比較</strong></a> のページで確認してください。
+  </p>
+  <p class='script'>
+    ユーザーが地域名・都市名やグラフタイプなどを選択し送信ボタンを押すと、
+    データがバックエンドに送られます。
+    バックエンドではそのデータを元に気温・降水量や類似都市のデータを取得し、フロントサイドに
+    返します。
+    フロントサイドでそのデータを元にグラフとテーブルを出力します。
+  </p>
+
+  <h2>Pythonanywhereのファイル構造</h2>
+
+  <div class='script'>
+  <figure class='script'>
+  <pre>
+  MySite
+    ├── app.py
+    ├── Wether_Data.csv
+    ├── templates
+    │       ├── index.html
+    │       ├── instruction.html
+    │       ├── script.html
+    │       └── layout.html
+    └── static
+            ├── header.jpg
+            ├── main.css
+            └── sitemap.xlm
+  </pre>
+  </figure>
+  <p class='script1'>
+    Pythonanywhereのファイル構造は上の様になっています。<br>
+    MySiteのフォルダ内にapp.pyとデータファイル(csv)を入れています。<br>
+    templatesのフォルダにはそれぞれのページのhtmlが入ります。
+    layout.htmlはそれぞれのページに共通の部分です。<br>
+    staticにはcss、jpg、sitemap.xmlを入れています。
+  </p>
+  </div>
+
+  <h2>app.py</h2>
+  <p class='script'>
+    このファイルでバックエンドの処理を行います。
+    フロントサイドとのデータの受け渡しも行います。
+  </p>
+
+  <div class='script'>
+  <figure class='script'>
+  <pre><code>
+from flask import Flask, render_template,
+request, redirect, url_for,
+send_from_directory, jsonify
+import numpy as np
+import pandas as pd
+import json
+
+def Find_N_Similar_City(City):
+    ~
+    ~
+    return Similar_City
+
+app = Flask(__name__)
+
+Weather_Data = pd.read_csv(
+    '/home/nyhoustl/mysite/Weather_Data.csv')
+
+data0 = {'City1': [],
+  'Temp1': [],
+  'Precip1': [],
+  'Cities_Japan':
+  list(Weather_Data[Weather_Data
+    ['Region']=='Japan']['City'])}
+  </code></pre>
+  </figure>
+  <p class='script1'>
+    この部分でflask, numpy, pandasなどのmoduleのimport、
+    データ処理に使う関数の定義、csvデータの読み込みと
+    HTMLに渡す初期値(data0)の設定を行っています。
+  </p>
+  </div>
+
+  <div class='script'>
+  <figure class='script'>
+  <pre><code>
+@app.route('/')
+def index():
+    return render_template(
+        'index.html',
+        data=data0,
+        title = '気候の比較')
+@app.route('/instruction')
+def instruction():
+    return render_template(
+        'instruction.html',
+        title = '使い方')
+@app.route('/script')
+def script():
+	return render_template(
+        'script.html',
+        title = 'スクリプト')
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory(
+        os.path.join(app.root_path,
+        'static'), 'sitemap.xml')
+  </code></pre>
+  </figure>
+  <p class='script1'>
+    この部分でindex.html, instruction.html, script.html
+    のそれぞれのページの読み込みを指定しています。
+    index.htmlには初期値(data0)を渡してしています。
+    sitemap.xml(Google search console用)の読み込みもここでしています。
+  <p>
+  </div>
+
+  <div class='script'>
+  <figure class='script'>
+  <pre><code>
+@app.route('/receive',
+    methods=['POST', 'GET'])
+def receive():
+    if request.method == 'POST':
+        data = request.get_data()
+        data = json.loads(data)
+
+        City1 = data['city1']
+        KoeppenC1 = Weather_Data.loc[
+          City1, 'KC']
+        Country1 = Weather_Data.loc[
+          City1, 'Country']
+        Temp1 = Weather_Data.loc[
+          City1,'AveTemp01':
+          'AveTemp12'].values
+        ~
+        return jsonify(
+          {'City1': City1,
+          'Temp1': list(Temp1),
+          'Precip1': list(Precip1),
+          'City2': City2,
+          'Temp2': list(Temp2),
+          'Precip2': list(Precip2),
+          'SimScore_City': SimScore_City,
+          'KoeppenC1': KoeppenC1,
+          'Country1': Country1})
+    else:
+        return jsonify(
+          {'City1': [],
+          'Temp1': [],
+          'Precip1': [],
+          'City2': [],
+          'Temp2': [],
+          'Precip2': []})
+  </code></pre>
+  </figure>
+  <p class='script1'>
+    この部分でフロントサイドとのデータの送受信と処理を行っています。<br>
+    data = request.get_data()の部分でフロントサイドで入力されたデータ
+    （都市名、グラフタイプなど）を受け取っています。<br>
+    return jsonifyの部分でその情報を元に気温、降水量、類似した都市、
+    ケッペン区分などのデータをフロントサイドに返しています。
+  </p>
+  </div>
+
+  <div class='script'>
+  <figure class='script'>
+  <pre><code>
+if __name__ == '__main__':
+  app.debug = True
+  app.run(host='0.0.0.0', port=8888)
+  </code></pre>
+  </figure>
+  <p class='script1'>
+    これで締め。
+    app.pyを開発環境で実行した場合はブラウザで
+    http://0.0.0.0:8888/で表示させることができます。
+  </p>
+  </div>
+
+  <h2>index.html (HTML/JavaScript)</h2>
+  <p class='script'>
+    このファイルで気候の比較のページ(index.html)を表示します。
+    ユーザーが地域名・都市名やグラフタイプなどを選択し送信ボタンを押すと、
+    データがバックエンドに送られます。
+    さらにバックエンドから返ったデータを元にグラフとテーブルを出力します。
+  </p>
+
+  <div class='script'>
+  <figure class='script'>
+  <pre><code>
+&#123;% extends 'layout.html' %&#125;
+&#123;% block content %&#125;
+&#60;div class='content'&#62;
+  &#60;h2&#62;２都市間の気候の比較。&#60;br&#62;似た気候の都市を探す。&#60;/h2&#62;
+&#60;/div&#62;
+  </code></pre>
+  </figure>
+  <p class='script1'>
+    &#123;% extends 'layout.html' %&#125; は各ページの共通部分layout.htmlの読み込み。
+    <br>
+    &#123;% block content %&#125; でそれ以降のhtml/jsの記載です。
+  </p>
+  </div>
+
+  <div class='script'>
+  <figure class='script'>
+  <pre><code>
+&#60;script type='text/javascript'&#62;
+function populate(s1, s2){
+  var s1 =  document.getElementById(s1);
+  var s2 =  document.getElementById(s2);
+  s2.innerHTML = '';
+  if (s1.value == 'Japan'){
+    var optionArray = &#123;{
+      data['Cities_Japan']
+      |tojson|safe}&#125;
+    optionArray.unshift('Tokyo');
+  }
+&#60;/script&#62;
+  </code></pre>
+  </figure>
+  <p class='script1'>
+    この部分で初期値をバックエンドのPython/Flaskから受け取っています。
+  </p>
+  </div>
+
+  <div class='script'>
+  <figure class='script'>
+  <pre><code>
+&#60;script type=text/javascript&#62;
+$(function() {
+  $('#button').on('click', function(e) {
+   e.preventDefault();
+   var data = JSON.stringify({
+      'region1':
+      $('select[name=slct1]').val(),
+      'city1':
+      $('select[name=slct2]').val(),
+      'region2':
+      $('select[name=slct3]').val(),
+      'city2':
+      $('select[name=slct4]').val()});
+   $.ajax({
+      url: '/receive',
+      type: 'post',
+      dataType: 'json',
+      contentType: 'application/json',
+      crossDomain: true,
+      data: data,
+      success: function(data_flask){
+        var City1 = data_flask.City1;
+        var Temp1 = data_flask.Temp1;
+        var City2 = data_flask.City2;
+        var Temp2 = data_flask.Temp2;
+        ~
+        Plotly.newPlot('myDiv', data_plot);
+    });
+  });
+&#60;/script&#62;
+  </code></pre>
+  </figure>
+  <p class='script1'>
+    この部分は送信ボタンを押されたらあとの処理です。
+    <br>
+    var data = JSON.stringifyの部分でフロントサイドのセレクタ情報を読み取っています。
+    <br>
+    $.ajaxの部分で、そのデータをバックエンドのPython/Flaskに送信し、返り値を受け取ります。
+    <br>
+    最後に受け取ったデータを処理し、plotlyでグラフ描画しています。
+  </p>
+  </div>
+</div>
+
+{% endblock content %}

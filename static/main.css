@@ -405,3 +405,23 @@ footer {
    color: #666;
    text-align: center;
 }
+
+figure.script {
+  background-color: #E8E8E8;
+  overflow: scroll;
+  padding: 5px 5px;
+}
+
+p.script {
+  padding: 10px 25px;
+}
+
+p.script1 {
+  padding: 10px 25px;
+}
+
+div.script {
+  border-style: solid;
+  border-color: #b2bfc2;
+  margin-bottom:30px;
+}

@@ -51,13 +51,13 @@ app = Flask(__name__)
 
 try:
     Weather_Data = pd.read_csv(
-        '~/Sites/WeatherPythonAnywhere/Weather_Data.csv', index_col=0)
+        'Weather_Data.csv', index_col=0)
     SimScore_Temp = pd.read_csv(
-        '~/Sites/WeatherPythonAnywhere/Weather_Data_SimScore_Temp.csv', index_col=0)
+        'Weather_Data_SimScore_Temp.csv', index_col=0)
     SimScore_AveTemp = pd.read_csv(
-            '~/Sites/WeatherPythonAnywhere/Weather_Data_SimScore_AveTemp.csv', index_col=0)
+            'Weather_Data_SimScore_AveTemp.csv', index_col=0)
     SimScore_Precip = pd.read_csv(
-            '~/Sites/WeatherPythonAnywhere/Weather_Data_SimScore_Precip.csv', index_col=0)
+            'Weather_Data_SimScore_Precip.csv', index_col=0)
 
 except:
     Weather_Data = pd.read_csv('/home/nyhoustl/mysite/Weather_Data.csv', index_col=0)
@@ -96,18 +96,23 @@ def index_en():
 
 @app.route('/instruction')
 def instruction():
-	return render_template('instruction.html',
-                    title = '使い方')
+	return render_template('instruction.html', title = '使い方')
 
 @app.route('/instruction_en')
 def instruction_en():
-	return render_template('instruction_en.html',
-                    title = 'Instruction')
+	return render_template('instruction_en.html', title = 'Instruction')
+
+@app.route('/script')
+def script():
+	return render_template('script.html', title = 'スクリプト')
+
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'sitemap.xml')
 
 @app.route('/receive', methods=['POST', 'GET'])
 def receive():
     if request.method == 'POST':
-        #data = request.form['data']
         data = request.get_data()
         data = json.loads(data)
 
@@ -263,8 +268,6 @@ def receive():
         return jsonify({'City1': [], 'Temp1': [], 'Precip1': [],
                         'City2': [], 'Temp2': [], 'Precip2': []})
 
-
-
 if __name__ == '__main__':
- app.debug = True
- app.run(host='0.0.0.0', port=8888)
+    app.debug = True
+    app.run(host='0.0.0.0', port=8888)

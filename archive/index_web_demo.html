@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class='content'>
+  <h2>２都市間の気候の比較。<br>似た気候の都市を探す。</h2>
+</div>
+
+<script type='text/javascript'>
+/* 初期値 */
+function populate(s1, s2){
+  var s1 =  document.getElementById(s1);
+  var s2 =  document.getElementById(s2);
+  s2.innerHTML = '';
+  if (s1.value == 'Japan'){
+    var optionArray = {{data['Cities_Japan']|tojson|safe}}
+    optionArray.unshift('Tokyo'); /* add a default city */
+  }
+</script>
+
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type=text/javascript>
+
+  /* データ送受信*/
+$(function() {
+  $('#button').on('click', function(e) {
+     e.preventDefault();
+     var data = JSON.stringify({
+          'region1': $('select[name=slct1]').val(),
+          'city1': $('select[name=slct2]').val(),
+          'region2': $('select[name=slct3]').val(),
+          'city2': $('select[name=slct4]').val(),
+          'temp_precip_ratio': $('#slider2').val()});
+     $.ajax({
+        url: '/receive',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        crossDomain: true,
+        data: data,
+        success: function(data_flask){
+          var City1 = data_flask.City1;
+          var Temp1 = data_flask.Temp1;
+          var Precip1 = data_flask.Precip1;
+          var City2 = data_flask.City2;
+          var Temp2 = data_flask.Temp2;
+          var Precip2 = data_flask.Precip2;
+          var SimScore_City1_2 = data_flask.SimScore_City1_2;
+          var Similar_City_List = data_flask.Similar_City_List;
+          var Temp_Precip_Ratio = data_flask.Temp_Precip_Ratio;
+          var KoeppenC1 = data_flask.KoeppenC1;
+          var Country1 = data_flask.Country1;
+
+          if (($('#checkbox1').is(':checked')) == true) //hythergraph
+          {
+            var trace1 = {x: Precip1, y: Temp1, name: City1,
+                          line: {shape: 'spline'}, type: 'scatter'};
+            var trace2 = {x: Precip2, y: Temp2, name: City2,
+                          line: {shape: 'spline'}, type: 'scatter'};
+          else  // bar-scatter graph
+
+          }
+
+          /*  plotlyで描画 */
+          Plotly.newPlot('myDiv', data_plot, layout, {responsive: true});
+
+</script>
+
+{% endblock content %}]

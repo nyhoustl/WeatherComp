@@ -1,0 +1,179 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class='content'>
+  <h2>Pythonanywhere, Flaskの使い方</h2>
+  <p>このサイトはPythonanywhereでPythonとFlaskをbackendで作っています。
+  初めてのweb applicationを作ったのですが、
+  ネットで調べながら作ったけどなかなか思うように情報が集まりませんでした。
+  参考になればと思い、スクリプトの一部を載せておきます。
+  </p>
+
+  <h2>Pythonanywhereのファイル構造</h2>
+  <figure>
+    <img src='static/file_structure.png'>
+    <p>Pythonanywhereのファイルは上の様な構造になっています。
+    MySiteのフォルダ内にapp.pyとデータファイル(csv)を入れています。
+    templatesにはそれぞれのページのhtmlを入れています。
+    layout.htmlはそれぞれのページに共通の部分です。
+    staticにはcssと画像ファイルを入れています。</p>
+
+  <h2>app.py</h2>
+  <p>app.pyでデータの処理やデータの受け渡しを行います。
+  データの処理のスクリプトは見やすくするため省略しています。</p>
+
+  <pre><code>
+  from flask import Flask, render_template, request, redirect, url_for,\
+  send_from_directory, jsonify
+  import numpy as np
+  import pandas as pd
+  import json
+
+  # データ処理で使う関数
+  def Find_N_Similar_City(City, Num, Data_Type, Region):
+      #省略
+      return Similar_City, Similarity_Score
+
+  app = Flask(__name__)
+
+  Weather_Data = pd.read_csv('/home/nyhoustl/mysite/Weather_Data.csv')
+      #他のファイルの読み込み、省略
+
+  data0 = {'City1': [], 'Temp1': [], 'Precip1': [],
+          'Cities_Japan': list(Weather_Data[Weather_Data
+              ['Region']=='Japan']['City'])}
+  </code></pre>
+  <p>この部分で必要なmoduleのimportと、関数の定義、初期値の設定を行っています。</p>
+
+  <pre><code>
+  @app.route('/')
+  def index():
+      return render_template('index.html', data=data0, title = '気候の比較')
+
+  @app.route('/instruction')
+  def instruction():
+      return render_template('instruction.html', title = '使い方')
+  </code></pre>
+  <p>この部分でそれぞれのページの読み込みを指定しています。</p>
+
+  <pre><code>
+  @app.route('/receive', methods=['POST', 'GET'])
+  def receive():
+      if request.method == 'POST':
+          data = request.get_data()
+          data = json.loads(data)
+
+          City1 = data['city1']
+          KoeppenC1 = Weather_Data.loc[City1, 'KC']
+          Country1 = Weather_Data.loc[City1, 'Country']
+          Temp1 = Weather_Data.loc[City1,'AveTemp01':'AveTemp12'].values
+          # 以下データ処理は省略
+
+          return jsonify({'City1': City1,
+                          'Temp1': list(Temp1),
+                          'Precip1': list(Precip1),
+                          'City2': City2,
+                          'Temp2': list(Temp2),
+                          'Precip2': list(Precip2),
+                          'SimScore_City1_2': SimScore_City1_2,
+                          'Similar_City_List': Similar_City_List,
+                          'Temp_Precip_Ratio': Temp_Precip_Ratio,
+                          'KoeppenC1': KoeppenC1,
+                          'Country1': Country1})
+      else:
+          return jsonify({'City1': [], 'Temp1': [], 'Precip1': [],
+                          'City2': [], 'Temp2': [], 'Precip2': []})
+  </code></pre>
+  <p> ここでデータの送受信と処理を行っています。
+  html/javascriptで入力されたデータ（都市名、グラフタイプなど）を受け取り
+  その情報を元に気温、降水量、類似した都市、ケッペン区分などを返しています。
+  </p>
+
+  <pre><code>
+  if __name__ == '__main__':
+  app.debug = True
+  app.run(host='0.0.0.0', port=8888)
+  </code></pre>
+  <p>これで締め。</p>
+
+  <h2>HTML, JavaScript</h2>
+
+  <pre><code>
+
+  <div class='content'>
+    <h2>２都市間の気候の比較。<br>似た気候の都市を探す。</h2>
+  </div>
+  </code></pre>
+  <p>{% extends 'layout.html' %}でlayout.htmlは各ページの共通部分の読み込み。</p>
+  <p>{% block content %}でそれ以降のhtml/jsの記載です。</p>
+
+  <pre><code>
+  <script type='text/javascript'>
+  function populate(s1, s2){
+    var s1 =  document.getElementById(s1);
+    var s2 =  document.getElementById(s2);
+    s2.innerHTML = '';
+    if (s1.value == 'Japan'){
+      var optionArray = {{data['Cities_Japan']|tojson|safe}}
+      optionArray.unshift('Tokyo'); /* add a default city */
+    }
+  </script>
+  </code></pre>
+  <p>この部分で初期値をPython/Flaskから受け取っています。</p>
+
+  <pre><code>
+  <script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <script type=text/javascript>
+
+  $(function() {
+    $('#button').on('click', function(e) {
+       e.preventDefault();
+       var data = JSON.stringify({
+            'region1': $('select[name=slct1]').val(),
+            'city1': $('select[name=slct2]').val(),
+            'region2': $('select[name=slct3]').val(),
+            'city2': $('select[name=slct4]').val(),
+            'temp_precip_ratio': $('#slider2').val()});
+       $.ajax({
+          url: '/receive',
+          type: 'post',
+          dataType: 'json',
+          contentType: 'application/json',
+          crossDomain: true,
+          data: data,
+          success: function(data_flask){
+            var City1 = data_flask.City1;
+            var Temp1 = data_flask.Temp1;
+            var Precip1 = data_flask.Precip1;
+            var City2 = data_flask.City2;
+            var Temp2 = data_flask.Temp2;
+            var Precip2 = data_flask.Precip2;
+            var SimScore_City1_2 = data_flask.SimScore_City1_2;
+            var Similar_City_List = data_flask.Similar_City_List;
+            var Temp_Precip_Ratio = data_flask.Temp_Precip_Ratio;
+            var KoeppenC1 = data_flask.KoeppenC1;
+            var Country1 = data_flask.Country1;
+
+            if (($('#checkbox1').is(':checked')) == true) //hythergraph
+            {
+              var trace1 = {x: Precip1, y: Temp1, name: City1,
+                            line: {shape: 'spline'}, type: 'scatter'};
+              var trace2 = {x: Precip2, y: Temp2, name: City2,
+                            line: {shape: 'spline'}, type: 'scatter'};
+            else  // bar-scatter graph
+            }
+
+            /*  plotlyで描画 */
+            Plotly.newPlot('myDiv', data_plot, layout, {responsive: true});
+  </script>
+
+  </code></pre>
+
+  <p>この部分で送信ボタンを押されたらデータを読み込みます(var data = JSON.stringifyの部分)。</p>
+  <p>さらにデータをPython/Flaskに送信し、返り値を受け取ります。($.ajaxの部分)</p>
+  <p>最後に受け取ったデータを元に描画をplotlyでしています。(if (($('#checkbox1')以降の部分)</p>
+
+</div>
+
+{% endblock content %}]
